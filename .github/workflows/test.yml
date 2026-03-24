@@ -20,4 +20,9 @@ jobs:
       - name: Install dependencies
         run: pip install -r app/requirements_flask.txt
       - name: Run tests
-        run: pytest    
+        run: pytest
+      - name: Dispatch Lambda deployment
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: lambda.yml
+          ref: aws-project    

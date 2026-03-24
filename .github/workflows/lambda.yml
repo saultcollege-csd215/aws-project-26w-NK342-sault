@@ -1,1 +1,24 @@
 name: Lambda deployment
+
+on:
+  workflow_dispatch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the LAB BRANCH of your repository code
+        uses: actions/checkout@v4
+        with:
+          ref: aws-project
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-region: us-east-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+      - name: Run a chmod command to set the permissions for the resources/deploy_lambda.sh script to be executable
+        run: chmod +x resources/deploy_lambda.sh
+      - name: Run the resources/deploy_lambda.sh script to deploy the Lambda function
+        run: ./resources/deploy_lambda.sh
