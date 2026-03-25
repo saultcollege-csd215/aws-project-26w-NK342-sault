@@ -69,14 +69,13 @@ aws ec2 describe-vpc-endpoints --vpc-endpoint-ids $vpc_endpoint_id
 aws dynamodb create-table --table-name $name --attribute-definitions $attr1 $attr2 $etc --key-schema $key_schema --billing-mode PAY_PER_REQUEST
 
 # EC2 instances
-aws ec2 run-instances --image-id $ami_image_id --count 1 --instance-type t2.nano --key-name $key_name --iam-instance-profile Name=$instance_profile_name --security-group-ids $flasksgid --subnet-id $pubsubnetid --associate-public-ip-address --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=csd215-flask-instance}]' --user-data file://$path_to_user_data_script
 aws ec2 stop-instances --instance-ids $id
 aws ec2 stop-instances --instance-ids $id --hibernate
 aws ec2 terminate-instances --instance-ids $id
 
 # Lambda
 aws lambda create-function --function-name $name --runtime python3.9 --role $role_name --handler lambda_app.main --vpc-config SubnetIds=$subnet_id,SecurityGroupIds=$security_group_id --zip-file fileb://$path_to_zip_file
-aws lambda update-function-code --function-name $name --zip-file $path_to_zip_file
+aws lambda update-function-code --function-name $name --zip-file $path_to_zip_file 
 
 ## Make function publicly accessible via Function URL
 aws lambda create-function-url-config --function-name $name --auth-type NONE

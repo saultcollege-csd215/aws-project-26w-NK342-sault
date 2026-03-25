@@ -17,8 +17,8 @@ def random_number():
 @app.route('/roll/d<int:num_faces>')
 def roll_dice(num_faces):
     num_dice = request.args.get('n', default=1, type=int)
-    if num_faces < 1 or num_dice < 1:
-        return jsonify({'error': 'Number of faces and number of dice must be positive integers.'}), 400
+    if num_faces < 2 or num_dice < 2:
+        return jsonify({'error': 'Number of faces and number of dice must be at least 2.'}), 400
 
     result = core.roll_dice(num_faces, num_dice)
 
